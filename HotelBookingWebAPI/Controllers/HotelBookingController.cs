@@ -145,7 +145,7 @@ namespace HotelBookingWebAPI.Controllers
             return Ok();
         }
 
-        /*
+        
         [HttpPut("{booking_id:int}")]
         public async Task<ActionResult> Update(Booking booking)
         {
@@ -153,8 +153,9 @@ namespace HotelBookingWebAPI.Controllers
             await _dbContext.SaveChangesAsync();
             return Ok();
         }
-        */
+        
         // PUT: api/HotelBooking/5
+        /*
         [HttpPut("{booking_id:int}")]
         public async Task<IActionResult> Update(int booking_id, [FromBody] Booking booking)
         {
@@ -188,6 +189,7 @@ namespace HotelBookingWebAPI.Controllers
                 return StatusCode(500, "An error occurred while updating the booking: " + ex.Message);
             }
         }
+        */
 
 
 
