@@ -147,13 +147,39 @@ namespace HotelBookingWebAPI.Controllers
 
         
         [HttpPut("{booking_id:int}")]
-        public async Task<ActionResult> Update(Booking booking)
+        public async Task<IActionResult> Update(int booking_id, Booking booking)
         {
-            _dbContext.Bookings.Update(booking);
-            await _dbContext.SaveChangesAsync();
-            return Ok();
+            if (booking_id != booking.BookingId)
+            {
+                return BadRequest("The provided booking ID does not match the booking object.");
+            }
+
+            try
+            {
+                var existingBooking = await _dbContext.Bookings.FindAsync(booking_id);
+
+                if (existingBooking == null)
+                {
+                    return NotFound("Booking not found.");
+                }
+
+                // Update the properties of the existing booking with the new values
+                existingBooking.BookingId = booking.BookingId; // Replace with actual properties to update
+
+                // Set the modified state for the existing booking
+                _dbContext.Entry(existingBooking).State = EntityState.Modified;
+
+                // Save changes to the database
+                await _dbContext.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while updating the booking: " + ex.Message);
+            }
         }
-        
+
         // PUT: api/HotelBooking/5
         /*
         [HttpPut("{booking_id:int}")]
